@@ -1,37 +1,19 @@
 #pragma once
 #include "shape.h"
 #include <vector>
+#include <iostream>
 
-class shapeList
+class shapeList :
+    public shape
 {
 public:
     shapeList() {}
-    
-    void add(shape* shape)
-    {
-        _shapes.push_back(shape);
 
-    }
-
-    bool hit(const ray& r, float tMin, float tMax, intersection& hit) const
-    {
-        intersection tempRecord;
-        bool hitAnything = false;
-        double closestHit = tMax;
-        auto listCount = _shapes.size();
-
-        for (int i = 0; i < listCount; ++i)
-        {
-            if (_shapes[i]->hit(r, tMin, closestHit, tempRecord))
-            {
-                hitAnything = true;
-                closestHit = tempRecord.t;
-                hit = tempRecord;
-            }
-        }
-
-        return hitAnything;
-    }
+    virtual bool hit(const ray& r, float tMin, float tMax, intersection& hit) const override;
+    virtual bool createBoundingBox(float t0, float t1, aabb& a) const override;
+    virtual float pdfValue(const vec3& o, const vec3& v) const override;
+    virtual vec3 random(const vec3& o) const override;
+    void add(shape* shape);
 
 private:
     std::vector<shape*> _shapes;

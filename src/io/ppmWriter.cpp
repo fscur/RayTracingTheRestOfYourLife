@@ -21,9 +21,9 @@ void ppmWriter::save(std::string fileName)
     auto header = "P3\n" + std::to_string(_width) + " " + std::to_string(_height) + "\n255\n";
     writer.writeLine(header);
 
-    for (int y = _height - 1; y >= 0; --y)
+    for (auto y = _height - 1u; y >= 0u; --y)
     {
-        for (int x = 0; x < _width; ++x)
+        for (auto x = 0u; x < _width; ++x)
         {
             auto r = _data[(y * _width * 3) + (x * 3) + 0];
             auto g = _data[(y * _width * 3) + (x * 3) + 1];

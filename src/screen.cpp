@@ -3,6 +3,7 @@
 #include "io/ppmWriter.h"
 #include "io/bitmapWriter.h"
 #include "time/stopwatch.h"
+#include "time/time.h"
 #include <future>
 #include <queue>
 
@@ -48,14 +49,7 @@ void screen::initInput()
 
 void screen::initScene()
 {
-    _scenes.push_back(scene::scene1());
-    _scenes.push_back(scene::scene2());
-    _scenes.push_back(scene::poolScene());
-    _scenes.push_back(scene::earthScene());
-    _scenes.push_back(scene::quadLightScene());
     _scenes.push_back(scene::cornelBoxScene());
-    _scenes.push_back(scene::cornelBoxSmokeScene());
-    _scenes.push_back(scene::finalScene());
 }
 
 void screen::initPathTracer()
@@ -86,38 +80,6 @@ void screen::onKeyUp(keyboardEventArgs* args)
             break;
         case PHIK_RIGHT:
             doubleResolution();
-            updateTitle();
-            break;
-        case PHIK_1:
-            changeScene(1);
-            updateTitle();
-            break;
-        case PHIK_2:
-            changeScene(2);
-            updateTitle();
-            break;
-        case PHIK_3:
-            changeScene(3);
-            updateTitle();
-            break;
-        case PHIK_4:
-            changeScene(4);
-            updateTitle();
-            break;
-        case PHIK_5:
-            changeScene(5);
-            updateTitle();
-            break;
-        case PHIK_6:
-            changeScene(6);
-            updateTitle();
-            break;
-        case PHIK_7:
-            changeScene(7);
-            updateTitle();
-            break;
-        case PHIK_8:
-            changeScene(8);
             updateTitle();
             break;
         default:
@@ -207,7 +169,7 @@ void screen::launchPathTracer()
                 info.width = _resultWidth;
                 info.height = _resultHeight;
                 info.ssp = _currentSsp;
-
+                info.k = 0.86f;
                 _pathTracer->run(info, pixelWriter);
             };
 
@@ -228,7 +190,13 @@ void screen::launchPathTracer()
                 rectangle<int>(0, 0, _resultWidth, _resultHeight),
                 rectangle<int>(0, 0, _width, _height));
 
-            std::string fileName = "result.png";
+            std::string fileName = "results//" +
+                std::to_string(_currentScene) + "_" +
+                std::to_string(_resultWidth) + "_" +
+                std::to_string(_resultHeight) + "_" +
+                std::to_string(_currentSsp) + "_" +
+                time::writeNow() + ".png";
+
             bmp->save(fileName);
 
             delete bmp;
@@ -236,7 +204,7 @@ void screen::launchPathTracer()
 
             _processing = false;
         }, test);
-        
+
     });
     task.detach();
 }
@@ -277,8 +245,7 @@ void screen::halveResolution()
 
 void screen::updateTitle()
 {
-    auto title = L"scene: " + std::to_wstring(_currentScene) + L" | "
-        L"hit enter to start [" +
+    auto title = L"hit enter to start [" +
         std::to_wstring(_resultWidth) + L" x " +
         std::to_wstring(_resultHeight) + L" x " +
         std::to_wstring(_currentSsp) + L" spp]";
@@ -297,7 +264,6 @@ void screen::writeInstructionsInConsole()
     console::writeLine("Left:   double resolution.");
     console::writeLine("Right:  halve resolution.");
     console::writeLine("Enter:  path trace.");
-    console::writeLine("[1..8]: change scene.");
     console::writeLine("ESC:    cancel.");
     console::writeLine("");
 }

@@ -29,10 +29,15 @@
     <ClCompile Include="io\bitmapWriter.cpp" />
     <ClCompile Include="io\ppmWriter.cpp" />
     <ClCompile Include="io\textWriter.cpp" />
+    <ClCompile Include="materials\cosinePdf.cpp" />
     <ClCompile Include="materials\dielectric.cpp" />
     <ClCompile Include="materials\emissive.cpp" />
+    <ClCompile Include="materials\isotropic.cpp" />
     <ClCompile Include="materials\lambertian.cpp" />
     <ClCompile Include="materials\metal.cpp" />
+    <ClCompile Include="materials\mixturePdf.cpp" />
+    <ClCompile Include="materials\shapePdf.cpp" />
+    <ClCompile Include="math\onb.cpp" />
     <ClCompile Include="math\perlin.cpp" />
     <ClCompile Include="pathTracing\pathTracer.cpp" />
     <ClCompile Include="scene\camera.cpp" />
@@ -42,10 +47,18 @@
     <ClCompile Include="io\path.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="screen.cpp" />
+    <ClCompile Include="shapes\box.cpp" />
+    <ClCompile Include="shapes\constantMedium.cpp" />
     <ClCompile Include="shapes\movingSphere.cpp" />
+    <ClCompile Include="shapes\quad.cpp" />
+    <ClCompile Include="shapes\rotateY.cpp" />
+    <ClCompile Include="shapes\shapeList.cpp" />
     <ClCompile Include="shapes\sphere.cpp" />
+    <ClCompile Include="textures\checkerTexture.cpp" />
     <ClCompile Include="textures\imageTexture.cpp" />
-    <ClCompile Include="textures\solidColor.cpp" />
+    <ClCompile Include="textures\marbleTexture.cpp" />
+    <ClCompile Include="textures\noiseTexture.cpp" />
+    <ClCompile Include="textures\colorTexture.cpp" />
     <ClCompile Include="time\stopwatch.cpp" />
     <ClCompile Include="time\time.cpp" />
   </ItemGroup>
@@ -69,13 +82,18 @@
     <ClInclude Include="io\pixelWriter.h" />
     <ClInclude Include="io\ppmWriter.h" />
     <ClInclude Include="io\textWriter.h" />
+    <ClInclude Include="materials\cosinePdf.h" />
     <ClInclude Include="materials\dielectric.h" />
     <ClInclude Include="materials\emissive.h" />
+    <ClInclude Include="materials\shapePdf.h" />
     <ClInclude Include="materials\isotropic.h" />
     <ClInclude Include="materials\lambertian.h" />
     <ClInclude Include="materials\material.h" />
     <ClInclude Include="materials\metal.h" />
+    <ClInclude Include="materials\mixturePdf.h" />
+    <ClInclude Include="materials\pdf.h" />
     <ClInclude Include="math\aabb.h" />
+    <ClInclude Include="math\onb.h" />
     <ClInclude Include="math\perlin.h" />
     <ClInclude Include="math\rectangle.h" />
     <ClInclude Include="pathTracing\pathTracer.h" />
@@ -100,11 +118,11 @@
     <ClInclude Include="shapes\shapeList.h" />
     <ClInclude Include="shapes\sphere.h" />
     <ClInclude Include="shapes\translate.h" />
-    <ClInclude Include="textures\checker.h" />
+    <ClInclude Include="textures\checkerTexture.h" />
     <ClInclude Include="textures\imageTexture.h" />
-    <ClInclude Include="textures\marble.h" />
-    <ClInclude Include="textures\noise.h" />
-    <ClInclude Include="textures\solidColor.h" />
+    <ClInclude Include="textures\marbleTexture.h" />
+    <ClInclude Include="textures\noiseTexture.h" />
+    <ClInclude Include="textures\colorTexture.h" />
     <ClInclude Include="textures\texture.h" />
     <ClInclude Include="time\stopwatch.h" />
     <ClInclude Include="time\time.h" />
@@ -257,6 +275,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../inc</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

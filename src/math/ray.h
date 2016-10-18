@@ -7,7 +7,7 @@ public:
     ray()
     {}
 
-    ray(const vec3& origin, const vec3& direction, float time):
+    ray(const vec3& origin, const vec3& direction, float time = 0.0f):
         origin(origin),
         direction(direction),
         invDir(1.0f / direction),

@@ -4,19 +4,13 @@
 #include "../samplers/sampler.h"
 
 class isotropic : 
-    public material {
+    public material 
+{
 public:
-    isotropic(texture* albedo) : 
-        _albedo(albedo) 
-    {
-    }
+    isotropic(texture* albedo);
 
-    virtual bool scatter(const ray& r, const intersection& hit, vec3& attenuation, ray& scattered) const 
-    {
-        scattered = ray(hit.point, sampler::randomPositionInUnitSphere(), r.time);
-        attenuation = _albedo->fetch(hit.uv, hit.point);
-        return true;
-    }
+    virtual bool scatter(const ray& r, const intersection& hit, scatterRecord& srec) const override;
+
 private:
     texture* _albedo;
 };

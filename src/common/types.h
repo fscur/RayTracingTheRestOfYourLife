@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define GLM_FORCE_RADIANS
 
 #include <vector>
@@ -13,6 +13,18 @@ using vec2 = glm::vec2;
 using ulong = unsigned long;
 using uint = unsigned int;
 using byte = unsigned char;
+
+const float π = glm::pi<float>();
+const float π_times_2 = glm::two_pi<float>();
+const float π_over_2 = glm::half_pi<float>();
+const float π_over_4 = glm::quarter_pi<float>();
+const float π¯¹ = glm::one_over_pi<float>();
+
+#undef max
+#undef min
+
+const float MAX_FLOAT = std::numeric_limits<float>().max();
+const float MIN_FLOAT = std::numeric_limits<float>().lowest();
 
 template<typename T>
 bool contains(std::vector<T> vector, T value)

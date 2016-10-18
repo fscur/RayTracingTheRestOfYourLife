@@ -1,4 +1,4 @@
-#include "sphere.h"
+﻿#include "sphere.h"
 
 sphere::sphere(vec3 center, float radius, material* material) :
     _center(center),
@@ -19,6 +19,7 @@ bool sphere::hit(const ray& ray, float tMin, float tMax, intersection& hit) cons
     if (discriminant > 0.0f)
     {
         float temp = (-b - sqrt(discriminant)) / a;
+
         if (temp < tMax && temp > tMin)
         {
             hit.t = temp;
@@ -28,7 +29,9 @@ bool sphere::hit(const ray& ray, float tMin, float tMax, intersection& hit) cons
             hit.uv = getUv(hit.normal);
             return true;
         }
+
         temp = (-b + sqrt(discriminant)) / a;
+
         if (temp < tMax && temp > tMin)
         {
             hit.t = temp;
@@ -50,11 +53,34 @@ bool sphere::createBoundingBox(float t0, float t1, aabb& a) const
     return true;
 }
 
+float sphere::pdfValue(const vec3 & o, const vec3 & v) const
+{
+    intersection tempHit;
+
+    if (this->hit(ray(o, v), 0.001f, MAX_FLOAT, tempHit))
+    {
+        auto p = (_center - o);
+        float cos_theta_max = sqrt(1.0f - _radius*_radius / dot(p, p));
+        float solid_angle = 2.0f * π * (1.0f - cos_theta_max);
+        return  1.0f / solid_angle;
+    }
+    else
+        return 0.0f;
+}
+
+vec3 sphere::random(const vec3 & o) const
+{
+    vec3 direction = _center - o;
+    float distanceSquared = dot(direction, direction);
+    onb uvw(direction);
+    return uvw.transform(sampler::randomToSphere(_radius, distanceSquared));
+}
+
 vec2 sphere::getUv(const vec3& point) const
 {
-    float phi = atan2(point.z, point.x);
-    float theta = asin(point.y);
-    float u = 1.0f - (phi + glm::pi<float>()) / glm::two_pi<float>();
-    float v = (theta + glm::half_pi<float>()) / glm::pi<float>();
-    return vec2(u, v);
+    float φ = atan2(point.z, point.x);
+    float θ = asin(point.y);
+    float u = 1.0f - (φ + π) / π_times_2;
+    float v = (θ + π_over_2) / π;
+    return vec2(u, v); 
 }

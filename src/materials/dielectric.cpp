@@ -7,12 +7,15 @@ dielectric::dielectric(float indexOfRefraction) :
     _indexOfRefraction(indexOfRefraction)
 {}
 
-bool dielectric::scatter(const ray& r, const intersection& hit, vec3& attenuation, ray& scattered) const
+bool dielectric::scatter(const ray& r, const intersection& hit, scatterRecord& srec) const
 {
+    srec.isSpecular = true;
+    srec.pdf = nullptr;
+    srec.albedo = vec3(1.0f, 1.0f, 1.0f);
+
     vec3 outwardNormal;
     vec3 reflected = vMath::reflect(r.direction, hit.normal);
     float eta;
-    attenuation = vec3(1.0f, 1.0f, 1.0f);
     vec3 refracted;
     float reflectionProbability;
     float cosine;
@@ -38,11 +41,11 @@ bool dielectric::scatter(const ray& r, const intersection& hit, vec3& attenuatio
 
     if (random::next() < reflectionProbability)
     {
-        scattered = ray(hit.point, reflected, r.time);
+        srec.specularRay = ray(hit.point, reflected, r.time);
     }
     else
     {
-        scattered = ray(hit.point, refracted, r.time);
+        srec.specularRay = ray(hit.point, refracted, r.time);
     }
 
     return true;

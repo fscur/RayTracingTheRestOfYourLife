@@ -36,6 +36,9 @@ bool aabbZCompare(shape* a, shape* b)
     return (leftAabb.min.z - rightAabb.min.z < 0.0);
 }
 
+bvh::bvh()
+{}
+
 bvh::bvh(std::vector<shape*>& shapes, float time0, float time1)
 {
     int axis = int(3 * random::next());
@@ -78,41 +81,6 @@ bvh::bvh(std::vector<shape*>& shapes, float time0, float time1)
 
     _aabb = aabb::getSurroundingAabb(leftAabb, rightAabb);
 }
-
-/*
-bool bvh::aabbXCompare(shape* a, shape* b)
-{
-    aabb leftAabb;
-    aabb rightAabb;
-
-    if (!a->createBoundingBox(0, 0, leftAabb) || !b->createBoundingBox(0, 0, rightAabb))
-        std::cerr << "no bounding box in bvh_node constructor\n";
-
-    return (leftAabb.min.x - rightAabb.min.x < 0.0);
-}
-
-bool bvh::aabbYCompare(shape* a, shape* b)
-{
-    aabb leftAabb;
-    aabb rightAabb;
-
-    if (!a->createBoundingBox(0, 0, leftAabb) || !b->createBoundingBox(0, 0, rightAabb))
-        std::cerr << "no bounding box in bvh_node constructor\n";
-
-    return (leftAabb.min.y - rightAabb.min.y < 0.0);
-}
-
-bool bvh::aabbZCompare(shape* a, shape* b)
-{
-    aabb leftAabb;
-    aabb rightAabb;
-
-    if (!a->createBoundingBox(0, 0, leftAabb) || !b->createBoundingBox(0, 0, rightAabb))
-        std::cerr << "no bounding box in bvh_node constructor\n";
-
-    return (leftAabb.min.z - rightAabb.min.z < 0.0);
-}
-*/
 
 bool bvh::hit(const ray& ray, float tMin, float tMax, intersection& hit) const
 {

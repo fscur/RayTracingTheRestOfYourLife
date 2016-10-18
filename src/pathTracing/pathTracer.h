@@ -12,6 +12,7 @@ struct pathTracerRunInfo
     int width;
     int height;
     int ssp;
+    float k;
 };
 
 class pathTracer
@@ -25,9 +26,9 @@ public:
 
 private:
     vec3 li(const ray& r, int depth);
+    vec3 deNaN(const vec3& color);
 
 private:
-    const float MAX_FLOAT;
     bool _running;
     scene* _scene;
     camera* _camera;

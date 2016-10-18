@@ -2,6 +2,7 @@
 
 #include "shape.h"
 #include "../math/rectangle.h"
+#include "../common/random.h"
 
 class xy_quad :
     public shape 
@@ -91,73 +92,30 @@ public:
         return true;
     }
 
+    virtual float pdfValue(const vec3& o, const vec3& v) const 
+    { 
+        intersection tempHit;
+        if (this->hit(ray(o, v), 0.001, std::numeric_limits<float>().max(), tempHit))
+        {
+            float area = (_x1 - _x0)*(_z1 - _z0);
+            float dist = tempHit.t * tempHit.t * dot(v, v);
+            float cosine = fabs(dot(v, tempHit.normal) / glm::length(v));
+            return dist / (cosine*area);
+        }
+        return 0.0f; 
+    }
+
+    virtual vec3 random(const vec3& o) const 
+    { 
+        vec3 p = vec3(
+            _x0 + random::next()*(_x1 - _x0),
+            _y,
+            _z0 + random::next()*(_z1 - _z0));
+
+        return p - o;
+    }
+
 private:
     material* _material;
     float _z0, _z1, _x0, _x1, _y;
 };
-
-bool xy_quad::hit(const ray& r, float tMin, float tMax, intersection& hit) const
-{
-    float t = (_z - r.origin.z) / r.direction.z;
-    
-    if (t < tMin || t > tMax)
-        return false;
-
-    float x = r.origin.x + t*r.direction.x;
-    float y = r.origin.y + t*r.direction.y;
-
-    if (x < _x0 || x > _x1 || y < _y0 || y > _y1)
-        return false;
-
-    hit.uv = vec2((x - _x0) / (_x1 - _x0), (y - _y0) / (_y1 - _y0));
-    hit.t = t;
-    hit.material = _material;
-    hit.point = r.pointAtParameter(t);
-    hit.normal = vec3(0.0f, 0.0f, 1.0f);
-
-    return true;
-}
-
-bool yz_quad::hit(const ray& r, float tMin, float tMax, intersection& hit) const
-{
-    float t = (_x - r.origin.x) / r.direction.x;
-
-    if (t < tMin || t > tMax)
-        return false;
-
-    float y = r.origin.y + t*r.direction.y;
-    float z = r.origin.z + t*r.direction.z;
-
-    if (y < _y0 || y > _y1 || z < _z0 || z > _z1)
-        return false;
-
-    hit.uv = vec2((y - _y0) / (_y1 - _y0), (z - _z0) / (_z1 - _z0));
-    hit.t = t;
-    hit.material = _material;
-    hit.point = r.pointAtParameter(t);
-    hit.normal = vec3(1.0f, 0.0f, 0.0f);
-
-    return true;
-}
-
-bool zx_quad::hit(const ray& r, float tMin, float tMax, intersection& hit) const
-{
-    float t = (_y - r.origin.y) / r.direction.y;
-
-    if (t < tMin || t > tMax)
-        return false;
-
-    float z = r.origin.z + t*r.direction.z;
-    float x = r.origin.x + t*r.direction.x;
-
-    if (z < _z0 || z > _z1 || x < _x0 || x > _x1)
-        return false;
-
-    hit.uv = vec2((z - _z0) / (_z1 - _z0), (x - _x0) / (_x1 - _x0));
-    hit.t = t;
-    hit.material = _material;
-    hit.point = r.pointAtParameter(t);
-    hit.normal = vec3(0.0f, 1.0f, 0.0f);
-
-    return true;
-}

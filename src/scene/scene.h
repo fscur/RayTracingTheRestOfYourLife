@@ -4,21 +4,14 @@
 #include "../math/ray.h"
 #include "../math/intersection.h"
 #include "../shapes/shape.h"
+#include "../shapes/shapeList.h"
 #include "../accelerators/bvh.h"
 #include "camera.h"
 
 class scene
 {
 public:
-    static scene* scene1();
-    static scene* scene2();
-    static scene* scene3();
-    static scene* earthScene();
-    static scene* quadLightScene();
     static scene* cornelBoxScene();
-    static scene* cornelBoxSmokeScene();
-    static scene* finalScene();
-    static scene* poolScene();
 
 public:
     scene(camera* camera, std::function<vec3(const ray&)> getBackgroundFunction);
@@ -27,6 +20,7 @@ public:
     bool hit(const ray& ray, float tMin, float tMax, intersection& hit) const;
 
     camera* getCamera() const { return _camera; }
+    shapeList* getImportanceShapes() const { return _importanceShapes; }
     vec3 getBackground(const ray& ray) const { return _getBackgroundFunction(ray); }
 
 private:
@@ -34,6 +28,7 @@ private:
     bvh _bvh;
     camera* _camera;
     std::function<vec3(const ray&)> _getBackgroundFunction;
+    shapeList* _importanceShapes;
 };
 
 

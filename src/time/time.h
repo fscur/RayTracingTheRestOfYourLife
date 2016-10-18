@@ -13,4 +13,5 @@ public:
 public:
     static void start();
     static void update();
+    static std::string writeNow();
 };

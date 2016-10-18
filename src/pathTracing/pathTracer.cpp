@@ -3,13 +3,15 @@
 #include "../common/random.h"
 #include "../materials/material.h"
 #include "../io/console.h"
+#include "../materials/shapePdf.h"
+#include "../materials/mixturePdf.h"
+#include "../shapes/quad.h"
 
 #include "pathTracer.h"
 
 #undef max
 
 pathTracer::pathTracer(scene* scene) :
-    MAX_FLOAT(std::numeric_limits<float>().max()),
     _running(false),
     _scene(scene),
     _camera(scene->getCamera())
@@ -29,16 +31,35 @@ void pathTracer::setScene(scene* scene)
 vec3 pathTracer::li(const ray& r, int depth)
 {
     intersection hit;
-    bool anyHit = _scene->hit(r, 0.001f, MAX_FLOAT, hit);
 
-    if (anyHit)
+    if (_scene->hit(r, 0.001f, MAX_FLOAT, hit))
     {
-        ray scattered;
-        vec3 attenuation;
-        vec3 emitted = hit.material->emitted(hit.uv, hit.point);
+        scatterRecord srec;
+        vec3 emitted = hit.material->emitted(r, hit, hit.uv, hit.point);
 
-        if (depth < 50 && hit.material->scatter(r, hit, attenuation, scattered))
-            return emitted + attenuation * li(scattered, depth+1);
+        if (depth < 50 && hit.material->scatter(r, hit, srec))
+        {
+            if (srec.isSpecular)
+            {
+                return srec.albedo * li(srec.specularRay, depth + 1);
+            }
+            else
+            {
+                shape* importanceShape = _scene->getImportanceShapes();
+                shapePdf pdfLight(importanceShape, hit.point);
+                mixturePdf p(&pdfLight, srec.pdf);
+
+                ray scattered = ray(hit.point, p.generate(), r.time);
+                float pdfValue = p.value(scattered.direction);
+                delete srec.pdf;
+
+                return 
+                    emitted + 
+                    srec.albedo * 
+                    hit.material->scatteringPdf(r, hit, scattered) * 
+                    li(scattered, depth+1) / pdfValue;
+            }
+        }
         else
             return emitted;
     }
@@ -46,6 +67,15 @@ vec3 pathTracer::li(const ray& r, int depth)
     {
         return _scene->getBackground(r);
     }
+}
+
+vec3 pathTracer::deNaN(const vec3& color) 
+{
+    vec3 temp = color;
+    if (isnan(temp[0])) temp[0] = 0.0f;
+    if (isnan(temp[1])) temp[1] = 0.0f;
+    if (isnan(temp[2])) temp[2] = 0.0f;
+    return temp;
 }
 
 void pathTracer::run(const pathTracerRunInfo& info, pixelWriter* pixelWriter)
@@ -68,17 +98,18 @@ void pathTracer::run(const pathTracerRunInfo& info, pixelWriter* pixelWriter)
         for (int i = info.tile.x; i < tileXEnd; ++i)
         {
             float x = float(i);
-            vec3 color;
+
+            vec3 radiance;
             for (int k = 0; k < info.ssp; ++k)
             {
                 float u = (x + random::next()) * invWidth;
                 float v = (y + random::next()) * invHeight;
                 const ray r = _camera->castRay(vec2(u, v));
-                color += li(r, 0);
+                radiance += deNaN(li(r, 0));
             }
-            color *= invSsp;
+            radiance *= invSsp;
 
-            pixelWriter->write(x, y, sqrt(color.x), sqrt(color.y), sqrt(color.z));
+            pixelWriter->write(x, y, sqrt(radiance.x), sqrt(radiance.y), sqrt(radiance.z));
         }
     }
 }

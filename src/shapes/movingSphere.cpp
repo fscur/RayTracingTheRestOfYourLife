@@ -1,4 +1,4 @@
-#include "movingSphere.h"
+﻿#include "movingSphere.h"
 
 movingSphere::movingSphere(
     vec3 center,
@@ -60,9 +60,6 @@ bool movingSphere::createBoundingBox(float t0, float t1, aabb& a) const
     auto c0 = _movementFunction(_center, t0, _speed);
     auto c1 = _movementFunction(_center, t1, _speed);
 
-    //auto c0 = _center;
-    //auto c1 = _center;
-
     auto aabb0 = aabb(c0 - r, c0 + r);
     auto aabb1 = aabb(c1 - r, c1 + r);
 
@@ -74,7 +71,7 @@ vec2 movingSphere::getUv(const vec3& point) const
 {
     float phi = atan2(point.z, point.x);
     float theta = asin(point.y);
-    float u = 1.0f - (phi + glm::pi<float>()) / glm::two_pi<float>();
-    float v = (theta + glm::half_pi<float>()) / glm::pi<float>();
+    float u = 1.0f - (phi + π) / glm::two_pi<float>();
+    float v = (theta + glm::half_pi<float>()) / π;
     return vec2(u, v);
 }

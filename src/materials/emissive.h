@@ -7,8 +7,9 @@ class emissive :
 {
 public:
     emissive(texture* albedo);
-    virtual bool scatter(const ray& r, const intersection& hit, vec3& attenuation, ray& scattered) const;
-    virtual vec3 emitted(const vec2& uv, const vec3& point) const;
+    virtual bool scatter(const ray& r, const intersection& hit, scatterRecord& srec) const;
+    virtual vec3 emitted(const ray& r, const intersection& hit, const vec2& uv, const vec3& point) const;
+
 private:
     texture* _albedo;
 };
