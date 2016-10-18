@@ -1,11 +1,11 @@
-#Ray Tracing The Next Weekend
+#Ray Tracing The Rest of Your Life
 
-![Ray Tracing The Next Weekend Image](https://github.com/fscur/RayTracingTheNextWeekend/blob/master/RayTracingTheNextWeekend.png)
+![Ray Tracing The Rest of Your Life Image](https://github.com/fscur/RayTracingTheRestOfYourLife/blob/master/RayTracingTheRestOfYourLife.png)
 
-This is my implementation of the book [Ray Tracing The Next Weekend](https://www.amazon.com/Ray-Tracing-Next-Week-Minibooks-ebook/dp/B01CO7PQ8C/ref=pd_sim_351_1?ie=UTF8&pd_rd_i=B01CO7PQ8C&pd_rd_r=EM9SM4K9SW7WECNSBAPA&pd_rd_w=Cv40C&pd_rd_wg=8myTP&psc=1&refRID=EM9SM4K9SW7WECNSBAPA) by Peter Shirley.
+This is my implementation of the book [Ray Tracing The Rest of Your Life](https://www.amazon.com/gp/product/B01DN58P8C/ref=pd_sim_351_2?ie=UTF8&pd_rd_i=B01DN58P8C&pd_rd_r=CC9SKXGE919X1928Z5XB&pd_rd_w=YoyJf&pd_rd_wg=MtDGp&psc=1&refRID=CC9SKXGE919X1928Z5XB) by Peter Shirley.
 
 Links:
-* [In a Weekend blog](http://in1weekend.blogspot.com.br/2016/01/ray-tracing-second-weekend.html)
+* [In a Weekend blog](http://in1weekend.blogspot.com.br/2016/03/ray-tracing-rest-of-your-life.html)
 
 Controls:
 * Up:     double ssp.
