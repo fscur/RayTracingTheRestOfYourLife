@@ -2,7 +2,7 @@
 
 ![Ray Tracing The Rest of Your Life Image](https://github.com/fscur/RayTracingTheRestOfYourLife/blob/master/RayTracingTheRestOfYourLife.png)
 
-This is my implementation of the book [Ray Tracing The Rest of Your Life](https://www.amazon.com/gp/product/B01DN58P8C/ref=pd_sim_351_2?ie=UTF8&pd_rd_i=B01DN58P8C&pd_rd_r=CC9SKXGE919X1928Z5XB&pd_rd_w=YoyJf&pd_rd_wg=MtDGp&psc=1&refRID=CC9SKXGE919X1928Z5XB) by Peter Shirley.
+This is my implementation of the book [Ray Tracing The Rest of Your Life](https://www.amazon.com/Ray-Tracing-Rest-Your-Minibooks-ebook/dp/B01DN58P8C/ref=sr_1_1?ie=UTF8&qid=1476825929&sr=8-1&keywords=Ray+Tracing%3A+The+Rest+Of+Your+Life) by Peter Shirley.
 
 Links:
 * [In a Weekend blog](http://in1weekend.blogspot.com.br/2016/03/ray-tracing-rest-of-your-life.html)
